@@ -1,0 +1,12 @@
+services:
+  agent-catalog:
+    build: .
+    ports: ["3001:3001"]
+    environment: { PORT: 3001, OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318" }
+    depends_on: { otel-collector: { condition: service_started } }
+    restart: unless-stopped
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.131.0
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes: ["./ops/otel-collector.yml:/etc/otelcol-contrib/config.yaml:ro"]
+    ports: ["4317:4317", "4318:4318", "8889:8889"]
