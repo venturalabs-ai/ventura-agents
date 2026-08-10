@@ -10,36 +10,30 @@
 
 | Arquivo | Descrição |
 |---------|-----------|
-| [**PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md**](PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md) | Documento técnico completo (~8000 linhas) com arquitetura, código TypeScript/Python, YAML dos 76 agentes, RAG, Observabilidade e Deployment |
-| [**README_PROMPT_MASTER_V3.md**](README_PROMPT_MASTER_V3.md) | Guia de uso, comparativo V2→V3, casos de uso e próximos passos |
-| [**RESUMO_EXECUTIVO_V3.md**](RESUMO_EXECUTIVO_V3.md) | Visão executiva com checklists, métricas e status 100% |
+| [**PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md**](PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md) | Documento técnico completo |
+| [**README_PROMPT_MASTER_V3.md**](README_PROMPT_MASTER_V3.md) | Guia de uso e comparativo V2→V3 |
+| [**RESUMO_EXECUTIVO_V3.md**](RESUMO_EXECUTIVO_V3.md) | Visão executiva + checklists |
+| [**docs/MCP_FOR_AGENTS.md**](docs/MCP_FOR_AGENTS.md) | Exploração do Model Context Protocol |
+
+## 💻 Código Implementado (Alterações executadas)
+
+| Caminho | Descrição |
+|---------|-----------|
+| [src/core/context-proxy.ts](src/core/context-proxy.ts) | **Expandir código TypeScript completo** — Context Proxy com 90% token reduction, Redis, embeddings e subagent spawning |
+| [src/rag/pipeline.py](src/rag/pipeline.py) | **Implementar RAG com ChromaDB** — Pipeline production-ready (chunking, hybrid search, re-ranking, context assembly) |
+| [docs/MCP_FOR_AGENTS.md](docs/MCP_FOR_AGENTS.md) | **Explorar MCP para agentes** — Arquitetura de comunicação inter-agentes via Model Context Protocol |
 
 ## 🎯 O Que é Isto?
 
-Ecossistema **production-ready** de **76 agentes especializados** cobrindo:
-
-- Governança (3)
-- Executiva (6)
-- Financeiro (16)
-- Jurídico (8)
-- RH (6) ⭐
-- Comercial (8) ⭐
-- Compras (6) ⭐
-- Operações (10) ⭐
-- Logística (9) ⭐
-- Tecnologia (8) ⭐
-- ESG (4) ⭐
-
-**Total: 76 agentes** com missão, nível de autonomia (A0-A4), skills, reviewers e model config.
+Ecossistema **production-ready** de **76 agentes especializados** cobrindo 11 camadas (Governança, Executiva, Financeiro, Jurídico, RH, Comercial, Compras, Operações, Logística, TI, ESG).
 
 ## ✨ Diferenciais V3.0
 
-- ✅ **Código Real**: Context Proxy (TypeScript 200+ linhas) + RAG Pipeline (Python 400+ linhas)
+- ✅ **Código Real**: Context Proxy (TypeScript) + RAG Pipeline (Python + ChromaDB)
+- ✅ **MCP**: Protocolo de comunicação entre agentes
 - ✅ **Observabilidade Full**: OpenTelemetry + Prometheus + Grafana + Jaeger
 - ✅ **Deployment Completo**: Docker Compose + Kubernetes + Terraform AWS
 - ✅ **Multi-Jurisdição**: Brasil, EUA, UE, China, Índia
-- ✅ **Prompt Híbrido Universal**: Funciona em GPT-4/5, Claude, Gemini, Llama, Mistral, DeepSeek
-- ✅ **15 Skills** especializadas (fiscal, LGPD, comex, contratos, ESG...)
 - ✅ **90% redução de tokens** via Context Compression
 - ✅ **Score 100/100** Production Ready
 
@@ -48,16 +42,11 @@ Ecossistema **production-ready** de **76 agentes especializados** cobrindo:
 ```bash
 git clone https://github.com/venturalabs-ai/ventura-global-agents.git
 cd ventura-global-agents
-# Leia o documento principal e o README_PROMPT_MASTER_V3.md
+# Código real em src/ e documentação em docs/
 ```
 
-## 📊 Status
+**Repositório Mestre (índice de todos os agentes):** [ventura-agents-master](https://github.com/venturalabs-ai/ventura-agents-master)
 
 **Versão:** 3.0.0 COMPLETE  
 **Data:** 09 de Agosto de 2026  
-**Autor:** Claude (Fable 5) + Engenharia Sênior de IA  
-**Owner:** venturalabs-ai / Wemerson Mota de Oliveira
-
----
-
-**Este é o sistema mais completo de agentes autônomos empresariais já criado.** 🚀
+**Owner:** venturalabs-ai
