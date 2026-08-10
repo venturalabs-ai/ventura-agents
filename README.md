@@ -68,3 +68,21 @@ npm run dev
 - `docker compose up --build`: inicia catálogo e OpenTelemetry Collector com OTLP e endpoint Prometheus.
 
 A orquestração, políticas, budgets e validação de execuções permanecem no `ventura-agents-master`.
+
+
+## Capacidades estruturais verificadas
+
+Todos os itens abaixo possuem implementação TypeScript, testes automatizados e documentação versionada:
+
+| Capacidade | Estado |
+| --- | --- |
+| Event Driven | ✅ Concluído |
+| Context Engineering | ✅ Concluído |
+| Knowledge Graph | ✅ Concluído |
+| Ontologia | ✅ Concluído |
+| Risk Management | ✅ Concluído |
+| Human Loop | ✅ Concluído |
+| ADR | ✅ Concluído |
+| Agent Registry | ✅ Concluído |
+
+Consulte [a matriz de completude](docs/COMPLETENESS_MATRIX.md) para os arquivos de evidência e [ADR 0001](docs/adr/0001-platform-primitives.md) para a decisão arquitetural.
