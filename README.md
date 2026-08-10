@@ -1,70 +1,58 @@
-# 🌐 Ventura Global Agents Ecosystem V3.0
+# Ventura Global Agents
 
-**PROMPT MASTER DEFINITIVO** - Sistema Completo de 76 Agentes Autônomos Empresariais
+An evolving enterprise multi-agent platform with explicit boundaries for orchestration, specialist agents, protocols, memory, RAG, model routing, evaluations, operations, security, observability, human approval, and deployment.
 
-[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com/venturalabs-ai/ventura-global-agents)
-[![Agentes](https://img.shields.io/badge/Agentes-76%2F76-blue)](https://github.com/venturalabs-ai/ventura-global-agents)
-[![Completude](https://img.shields.io/badge/Completude-100%25-success)](https://github.com/venturalabs-ai/ventura-global-agents)
+> Current status: foundation under active development. Capabilities are classified as `implemented`, `contract`, or `planned`; this repository does not claim production readiness for planned components.
 
-## 📋 Documentação Principal
+## What runs today
 
-| Arquivo | Descrição |
-|---------|-----------|
-| [**PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md**](PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md) | Documento técnico completo |
-| [**README_PROMPT_MASTER_V3.md**](README_PROMPT_MASTER_V3.md) | Guia de uso e comparativo V2→V3 |
-| [**RESUMO_EXECUTIVO_V3.md**](RESUMO_EXECUTIVO_V3.md) | Visão executiva + checklists |
-| [**docs/MCP_FOR_AGENTS.md**](docs/MCP_FOR_AGENTS.md) | Exploração do Model Context Protocol |
+- TypeScript agent catalog with supervisor, planning, delivery, data, AI, security, MLOps, and AgentOps roles.
+- HTTP endpoints for health, registered agents, and the architecture capability registry.
+- Container build and local Docker Compose stack with an OpenTelemetry Collector.
+- Type checking, unit tests, build validation, Docker configuration validation, and image build in CI.
+- A Python RAG prototype whose public contract is checked statically; external-provider integration is not yet an end-to-end test.
 
-## 💻 Código Implementado (Alterações executadas)
-
-| Caminho | Descrição |
-|---------|-----------|
-| [src/core/context-proxy.ts](src/core/context-proxy.ts) | **Expandir código TypeScript completo** — Context Proxy com 90% token reduction, Redis, embeddings e subagent spawning |
-| [src/rag/pipeline.py](src/rag/pipeline.py) | **Implementar RAG com ChromaDB** — Pipeline production-ready (chunking, hybrid search, re-ranking, context assembly) |
-| [docs/MCP_FOR_AGENTS.md](docs/MCP_FOR_AGENTS.md) | **Explorar MCP para agentes** — Arquitetura de comunicação inter-agentes via Model Context Protocol |
-
-## 🎯 O Que é Isto?
-
-Ecossistema **production-ready** de **76 agentes especializados** cobrindo 11 camadas (Governança, Executiva, Financeiro, Jurídico, RH, Comercial, Compras, Operações, Logística, TI, ESG).
-
-## ✨ Diferenciais V3.0
-
-- ✅ **Código Real**: Context Proxy (TypeScript) + RAG Pipeline (Python + ChromaDB)
-- ✅ **MCP**: Protocolo de comunicação entre agentes
-- ✅ **Observabilidade Full**: OpenTelemetry + Prometheus + Grafana + Jaeger
-- ✅ **Deployment Completo**: Docker Compose + Kubernetes + Terraform AWS
-- ✅ **Multi-Jurisdição**: Brasil, EUA, UE, China, Índia
-- ✅ **90% redução de tokens** via Context Compression
-- ✅ **Score 100/100** Production Ready
-
-## 🚀 Quick Start
-
-```bash
-git clone https://github.com/venturalabs-ai/ventura-global-agents.git
-cd ventura-global-agents
-# Código real em src/ e documentação em docs/
-```
-
-**Repositório Mestre (índice de todos os agentes):** [ventura-agents-master](https://github.com/venturalabs-ai/ventura-agents-master)
-
-**Versão:** 3.0.0 COMPLETE  
-**Data:** 09 de Agosto de 2026  
-**Owner:** venturalabs-ai
-
-
-## Catálogo executável por camada
-
-Além dos 76 agentes empresariais documentados, a base TypeScript expõe um catálogo operacional para quatro disciplinas técnicas: Engenharia de Dados, IA, MLOps e AgentOps.
+## Quick start
 
 ```bash
 npm ci
 npm run check
-npm run dev
+npm start
 ```
 
-- `GET /v1/agents`: lista agentes técnicos registrados.
-- `GET /v1/agents/:id`: consulta uma capacidade específica.
-- `GET /health`: readiness do catálogo.
-- `docker compose up --build`: inicia catálogo e OpenTelemetry Collector com OTLP e endpoint Prometheus.
+Available endpoints:
 
-A orquestração, políticas, budgets e validação de execuções permanecem no `ventura-agents-master`.
+- `GET /health`
+- `GET /v1/agents`
+- `GET /v1/agents/:id`
+- `GET /v1/platform/capabilities`
+
+For containers:
+
+```bash
+docker compose up --build
+```
+
+## Architecture
+
+The [World Class 2026 architecture](docs/architecture/WORLD_CLASS_2026.md) defines the target domains, runtime flow, architectural rules, and objective maturity model. The machine-readable source of truth is [`src/platform/architecture.ts`](src/platform/architecture.ts).
+
+| Critical capability | Current maturity |
+| --- | --- |
+| Multi-agent catalog | Implemented |
+| Docker / Compose / CI deployment foundation | Implemented |
+| Orchestration, routing, policy, evals, RAG, MLOps, AgentOps, security, observability, human loop | Contract |
+| MCP, A2A, knowledge graph, data platform, production connectors | Planned |
+
+## Existing design documents
+
+- [Global Agents Ecosystem V3](PROMPT_MASTER_GLOBAL_AGENTS_ECOSYSTEM_V3_COMPLETE.md)
+- [V3 guide](README_PROMPT_MASTER_V3.md)
+- [Executive summary](RESUMO_EXECUTIVO_V3.md)
+- [MCP exploration](docs/MCP_FOR_AGENTS.md)
+
+These documents describe direction and design. Runtime support is authoritative only when the capability registry marks it `implemented` and CI provides evidence.
+
+## Ownership
+
+Ventura Labs AI · Wemerson Mota de Oliveira
