@@ -50,3 +50,21 @@ cd ventura-global-agents
 **Versão:** 3.0.0 COMPLETE  
 **Data:** 09 de Agosto de 2026  
 **Owner:** venturalabs-ai
+
+
+## Catálogo executável por camada
+
+Além dos 76 agentes empresariais documentados, a base TypeScript expõe um catálogo operacional para quatro disciplinas técnicas: Engenharia de Dados, IA, MLOps e AgentOps.
+
+```bash
+npm ci
+npm run check
+npm run dev
+```
+
+- `GET /v1/agents`: lista agentes técnicos registrados.
+- `GET /v1/agents/:id`: consulta uma capacidade específica.
+- `GET /health`: readiness do catálogo.
+- `docker compose up --build`: inicia catálogo e OpenTelemetry Collector com OTLP e endpoint Prometheus.
+
+A orquestração, políticas, budgets e validação de execuções permanecem no `ventura-agents-master`.
