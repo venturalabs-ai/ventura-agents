@@ -12,10 +12,7 @@
     "declaration": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/catalog.ts",
-    "src/index.ts"
-  ],
+  "include": ["src/catalog.ts", "src/index.ts", "src/platform/**/*.ts"],
   "exclude": [
     "dist",
     "node_modules"
