@@ -1,16 +1,16 @@
 # Ventura Agents Ecosystem V3.0
 
-**Sistema de 76 Agentes Autônomos Empresariais** — Fundação técnica (TypeScript + Python) production-ready.
+**Sistema de 76 Agentes Autônomos Empresariais** — Fundação técnica (TypeScript + Python) open source e production-ready.
 
 [![CI](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/version-3.0.0-blue)](CHANGELOG.md)
-[![License](https://img.shields.io/badge/license-Proprietary-red)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.12+-yellow)](pyproject.toml)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-green)](package.json)
 
 ## Visão Geral
 
-Ecossistema production-ready de **76 agentes especializados** cobrindo 11 camadas:
+Ecossistema **open source** e production-ready de **76 agentes especializados** cobrindo 11 camadas:
 Governança, Executiva, Financeiro, Jurídico, RH, Comercial, Compras, Operações, Logística, TI e ESG.
 
 ### Diferenciais V3
@@ -85,14 +85,15 @@ Endpoints:
 - **CI** (`ci.yml`): Node typecheck/test/build + Python ruff/pytest + Docker build
 - **Release** (`release.yml`): cria GitHub Release automaticamente em tags `v*`
 - **Dependabot**: atualizações semanais de npm, pip e GitHub Actions
-- **Branch protection**: recomendado proteger `main` (PR obrigatório + status checks)
+- **Branch protection**: PR obrigatório + status checks + block force pushes em `main`
 
 ## Licença
 
-Software **proprietário**. Veja [LICENSE](LICENSE).
+Distribuído sob a licença **MIT**. Veja [LICENSE](LICENSE) para detalhes.
 
-Uso, redistribuição e engenharia reversa são restritos.  
-Contato comercial: [dev@venturalabs.ai](mailto:dev@venturalabs.ai)
+```
+MIT License — Copyright (c) 2026 Ventura Labs AI
+```
 
 ---
 
