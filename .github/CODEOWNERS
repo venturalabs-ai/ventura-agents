@@ -1,0 +1,13 @@
+# Default owner
+*       @venturalabs-ai
+
+# Core platform & agents
+/src/                   @venturalabs-ai
+/agents/                @venturalabs-ai
+/core/                  @venturalabs-ai
+
+# CI / Infra
+/.github/               @venturalabs-ai
+/ops/                   @venturalabs-ai
+Dockerfile              @venturalabs-ai
+docker-compose.yml      @venturalabs-ai
