@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog snippet
+        id: changelog
+        run: |
+          if [ -f CHANGELOG.md ]; then
+            # Extract section for this version or Unreleased
+            awk "/^## \[${{ steps.version.outputs.VERSION }}\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > release_notes.md || true
+            if [ ! -s release_notes.md ]; then
+              echo "Release ${{ steps.version.outputs.VERSION }}" > release_notes.md
+            fi
+          else
+            echo "Release ${{ steps.version.outputs.VERSION }}" > release_notes.md
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Ventura Agents ${{ steps.version.outputs.VERSION }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.VERSION, '-') }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
