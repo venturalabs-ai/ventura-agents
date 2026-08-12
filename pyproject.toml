@@ -4,9 +4,18 @@ version = "3.0.0"
 description = "Ventura Labs AI — Ecossistema de Agentes Autônomos Empresariais"
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "Proprietary" }
+license = { text = "MIT" }
 authors = [
     { name = "Ventura Labs AI", email = "dev@venturalabs.ai" }
+]
+keywords = ["agents", "ai", "autonomous", "mcp", "rag", "enterprise"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
 ]
 dependencies = [
     "pydantic>=2.9.0",
@@ -30,6 +39,12 @@ rag = [
     "chromadb>=0.5.0",
     "sentence-transformers>=3.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/venturalabs-ai/ventura-agents"
+Repository = "https://github.com/venturalabs-ai/ventura-agents"
+Issues = "https://github.com/venturalabs-ai/ventura-agents/issues"
+Changelog = "https://github.com/venturalabs-ai/ventura-agents/blob/main/CHANGELOG.md"
 
 [tool.ruff]
 target-version = "py312"
