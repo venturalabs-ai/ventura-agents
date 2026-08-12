@@ -1,5 +1,68 @@
+# Dependencies
 node_modules/
+.pnp
+.pnp.js
+
+# Build / dist
 dist/
-coverage/
+build/
+*.egg-info/
+.eggs/
+*.egg
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+.env/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Environment & secrets
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+
+# Logs & temp
 *.log
+logs/
+tmp/
+temp/
+.cache/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Docker
+*.local
+
+# Coverage & reports
+coverage/
+.nyc_output/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local data (RAG / Chroma)
+data/
+chroma/
+*.db
