@@ -52,7 +52,7 @@ Endpoints:
 | `src/rag/pipeline.py` | RAG production-ready (ChromaDB) |
 | `src/platform/` | Event Driven, Knowledge, Risk, Human Loop, Registry |
 | `docs/` | ADRs, matriz de completude, MCP |
-| `.github/workflows/` | CI unificado + Release + Dependabot |
+| `.github/workflows/` | CI unificado + Release + SonarQube + Dependabot |
 
 ## Documentação
 
@@ -83,9 +83,19 @@ Endpoints:
 ## Automação Production-Ready
 
 - **CI** (`ci.yml`): Node typecheck/test/build + Python ruff/pytest + Docker build
-- **Release** (`release.yml`): cria GitHub Release automaticamente em tags `v*`
-- **Dependabot**: atualizações semanais de npm, pip e GitHub Actions
+- **SonarQube** (`sonarqube.yml`): análise de qualidade + Quality Gate em PRs e `main`
+- **Release** (`release.yml`): GitHub Release automático em tags `v*`
+- **Dependabot**: atualizações semanais (npm / pip / GitHub Actions) com groups e conventional commits
 - **Branch protection**: PR obrigatório + status checks + block force pushes em `main`
+
+### SonarQube (setup único)
+
+1. Crie o projeto em [SonarQube Cloud](https://sonarcloud.io) (org: `venturalabs-ai`)
+2. Gere um token e adicione o secret no repositório:
+   - **Settings → Secrets and variables → Actions → New repository secret**
+   - Name: `SONAR_TOKEN`
+   - Value: o token gerado
+3. O arquivo `sonar-project.properties` já está configurado.
 
 ## Licença
 
