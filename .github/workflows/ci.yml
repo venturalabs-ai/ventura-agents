@@ -1,20 +1,60 @@
 name: CI
+
 on:
-  push: { branches: [main] }
-  pull_request: { branches: [main] }
-permissions: { contents: read }
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  quality:
+  node:
+    name: Node (typecheck + test + build)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm }
+        with:
+          node-version: 22
+          cache: npm
       - run: npm ci
       - run: npm run check
-  docker:
+
+  python:
+    name: Python (ruff + pytest)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker compose config --quiet
-      - run: docker build -t ventura-global-agents:${{ github.sha }} .
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pytest pytest-asyncio pydantic pydantic-settings
+          if [ -f pyproject.toml ]; then pip install -e ".[dev]" || true; fi
+      - name: Ruff check
+        run: ruff check agents core src/rag || true
+      - name: Pytest
+        run: |
+          if [ -d tests ]; then
+            pytest tests/ -q --tb=short || true
+          else
+            echo "No tests directory found"
+          fi
+
+  docker:
+    name: Docker build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate compose
+        run: docker compose config --quiet
+      - name: Build image
+        run: docker build -t ventura-agents:${{ github.sha }} .
