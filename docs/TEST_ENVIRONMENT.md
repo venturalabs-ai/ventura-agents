@@ -11,7 +11,6 @@ graph TD
     B --> F[security-scan-ventura.sh]
     C --> G[CI]
     C --> H[Health Check horário]
-    C --> I[SonarQube]
     C --> J[Dependabot]
 ```
 
@@ -24,7 +23,6 @@ graph TD
 | Segurança | npm audit + heurística de secrets | `bash scripts/security-scan-ventura.sh` |
 | CI contínuo | typecheck/test/build + Docker | `.github/workflows/ci.yml` |
 | Health horário | mesma suíte a cada hora | `.github/workflows/health-check.yml` |
-| Qualidade | SonarQube + Quality Gate | `.github/workflows/sonarqube.yml` |
 
 ## Endpoint local
 
