@@ -1,1 +1,26 @@
-{"name":"@ventura/global-agents","version":"0.1.0","private":true,"type":"module","engines":{"node":">=20"},"scripts":{"build":"tsc -p tsconfig.json","dev":"tsx watch src/index.ts","start":"node dist/src/index.js","test":"node --import tsx --test tests/**/*.test.ts","typecheck":"tsc --noEmit","check":"npm run typecheck && npm test && npm run build"},"devDependencies":{"@types/node":"^24.0.0","tsx":"^4.20.0","typescript":"^5.9.0"}}
+{
+  "name": "@ventura/global-agents",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/src/index.js",
+    "test": "node --import tsx --test tests/**/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test && npm run build",
+    "audit:functional": "bash scripts/validate-ventura-agents.sh",
+    "audit:community": "bash scripts/validate-community.sh",
+    "audit:security": "bash scripts/security-scan-ventura.sh",
+    "audit:all": "npm run audit:functional && npm run audit:community && npm run audit:security"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
