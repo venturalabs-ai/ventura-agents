@@ -1,91 +1,62 @@
+# Dependabot configuration for automatic dependency updates
+# Documentation: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
 version: 2
 updates:
-  # ─── npm (Node / TypeScript) ─────────────────────────────
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "09:00"
-      timezone: "America/Sao_Paulo"
-    open-pull-requests-limit: 8
-    labels:
-      - "dependencies"
-      - "npm"
-    commit-message:
-      prefix: "chore(deps)"
-      include: "scope"
+    open-pull-requests-limit: 5
     groups:
-      npm-production:
-        dependency-type: "production"
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "eslint*"
+          - "typescript"
+          - "vitest"
         update-types:
           - "minor"
           - "patch"
-      npm-development:
-        dependency-type: "development"
-        update-types:
-          - "minor"
-          - "patch"
-    ignore:
-      # Major updates of TypeScript often need manual review
-      - dependency-name: "typescript"
-        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
 
-  # ─── Python (pip / pyproject.toml) ───────────────────────
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "09:00"
-      timezone: "America/Sao_Paulo"
-    open-pull-requests-limit: 8
-    labels:
-      - "dependencies"
-      - "python"
-    commit-message:
-      prefix: "chore(deps)"
-      include: "scope"
+    open-pull-requests-limit: 5
     groups:
-      python-core:
-        patterns:
-          - "pydantic*"
-          - "httpx"
-          - "structlog"
-          - "tenacity"
-          - "orjson"
-        update-types:
-          - "minor"
-          - "patch"
-      python-dev:
+      dev-dependencies:
         patterns:
           - "pytest*"
           - "ruff"
           - "mypy"
-          - "pre-commit"
         update-types:
           - "minor"
           - "patch"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
 
-  # ─── GitHub Actions ──────────────────────────────────────
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "09:00"
-      timezone: "America/Sao_Paulo"
-    open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-      - "ci"
+    open-pull-requests-limit: 3
     commit-message:
-      prefix: "chore(ci)"
+      prefix: "chore"
       include: "scope"
-    groups:
-      github-actions:
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
