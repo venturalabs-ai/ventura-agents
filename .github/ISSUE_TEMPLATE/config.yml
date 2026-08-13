@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentação do projeto
+    url: https://github.com/venturalabs-ai/ventura-agents#documentação
+    about: Consulte README, ADRs e matriz de completude antes de abrir uma issue.
+  - name: Segurança
+    url: https://github.com/venturalabs-ai/ventura-agents/blob/main/SECURITY.md
+    about: Para vulnerabilidades, use o processo de disclosure responsável.
