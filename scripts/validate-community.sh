@@ -58,7 +58,7 @@ else
 fi
 
 echo "8. CI / automation"
-for f in ci.yml release.yml sonarqube.yml dependabot.yml; do
+for f in ci.yml release.yml dependabot.yml; do
   if [ -f ".github/workflows/$f" ] || [ -f ".github/$f" ]; then ok "$f"; else bad "$f"; fi
 done
 

@@ -3,7 +3,6 @@
 **Sistema de 76 Agentes Autônomos Empresariais** — Fundação técnica (TypeScript + Python) open source e production-ready.
 
 [![CI](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/ci.yml)
-[![SonarQube](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/sonarqube.yml/badge.svg)](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/sonarqube.yml)
 [![Version](https://img.shields.io/badge/version-3.0.0-blue)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.12+-yellow)](pyproject.toml)
@@ -52,8 +51,6 @@ Endpoints:
 | `src/core/context-proxy.ts` | Context Proxy com compressão de tokens |
 | `src/rag/pipeline.py` | RAG production-ready (ChromaDB) |
 | `src/platform/` | Event Driven, Knowledge, Risk, Human Loop, Registry |
-| `docs/` | ADRs, matriz de completude, MCP, SonarQube |
-| `.github/workflows/` | CI + Health + Release + SonarQube + Dependabot |
 
 ## Documentação
 
@@ -64,7 +61,6 @@ Endpoints:
 | [RESUMO_EXECUTIVO_V3.md](RESUMO_EXECUTIVO_V3.md) | Visão executiva + checklists |
 | [docs/MCP_FOR_AGENTS.md](docs/MCP_FOR_AGENTS.md) | Model Context Protocol |
 | [docs/COMPLETENESS_MATRIX.md](docs/COMPLETENESS_MATRIX.md) | Matriz de completude |
-| [docs/SONARQUBE.md](docs/SONARQUBE.md) | Setup SonarQube Cloud |
 | [docs/TEST_ENVIRONMENT.md](docs/TEST_ENVIRONMENT.md) | Ambiente de auditoria |
 | [CHANGELOG.md](CHANGELOG.md) | Histórico de versões |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Como contribuir |
@@ -86,17 +82,13 @@ Endpoints:
 ## Automação Production-Ready
 
 - **CI** (`ci.yml`): Node typecheck/test/build + Python ruff/pytest + Docker build
-- **SonarQube** (`sonarqube.yml`): scan + Quality Gate em PRs e `main`
 - **Health Check** (`health-check.yml`): validação horária
 - **Release** (`release.yml`): GitHub Release em tags `v*`
 - **Dependabot**: npm / pip / GitHub Actions
 
-### SonarQube (setup único)
 
 Guia completo: **[docs/SONARQUBE.md](docs/SONARQUBE.md)**
 
-1. Projeto em [sonarcloud.io](https://sonarcloud.io) — org `venturalabs-ai`, key `venturalabs-ai_ventura-agents`
-2. Secret no GitHub: `SONAR_TOKEN`
 3. Workflow roda em todo push/PR em `main`
 
 ## Licença
