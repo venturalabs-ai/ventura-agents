@@ -1,0 +1,62 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # hourly
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: health-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  health:
+    name: Functional health
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Community audit
+        run: bash scripts/validate-community.sh
+
+      - name: Functional audit (files + npm)
+        run: bash scripts/validate-ventura-agents.sh
+
+      - name: Write status
+        run: |
+          {
+            echo "status=operational"
+            echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "version=$(node -p "require('./package.json').version")"
+            echo "commit=${{ github.sha }}"
+          } > status.txt
+          cat status.txt
+
+      - name: Upload status
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-check-results
+          path: status.txt
+          retention-days: 7
