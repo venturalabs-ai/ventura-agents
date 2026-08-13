@@ -19,7 +19,7 @@
     "audit:all": "npm run audit:functional && npm run audit:community && npm run audit:security"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.2.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
   }
