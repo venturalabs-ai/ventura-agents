@@ -87,7 +87,6 @@ Endpoints:
 - **Dependabot**: npm / pip / GitHub Actions
 
 
-Guia completo: **[docs/SONARQUBE.md](docs/SONARQUBE.md)**
 
 3. Workflow roda em todo push/PR em `main`
 
