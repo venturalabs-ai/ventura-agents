@@ -1,0 +1,64 @@
+{
+  "name": "Ventura Production",
+  "description": "Quality Gate personalizado para o ecossistema Ventura Agents (foco em new code + segurança overall).",
+  "projectKey": "venturalabs-ai_ventura-agents",
+  "organization": "venturalabs-ai",
+  "conditions": [
+    {
+      "metric": "new_reliability_rating",
+      "op": "GT",
+      "error": "1",
+      "scope": "new_code",
+      "meaning": "Falhar se Reliability em new code for pior que A"
+    },
+    {
+      "metric": "new_security_rating",
+      "op": "GT",
+      "error": "1",
+      "scope": "new_code",
+      "meaning": "Falhar se Security em new code for pior que A"
+    },
+    {
+      "metric": "new_maintainability_rating",
+      "op": "GT",
+      "error": "1",
+      "scope": "new_code",
+      "meaning": "Falhar se Maintainability em new code for pior que A"
+    },
+    {
+      "metric": "new_coverage",
+      "op": "LT",
+      "error": "60",
+      "scope": "new_code",
+      "meaning": "Cobertura de new code deve ser >= 60%"
+    },
+    {
+      "metric": "new_duplicated_lines_density",
+      "op": "GT",
+      "error": "3",
+      "scope": "new_code",
+      "meaning": "Duplicação em new code deve ser <= 3%"
+    },
+    {
+      "metric": "new_security_hotspots_reviewed",
+      "op": "LT",
+      "error": "100",
+      "scope": "new_code",
+      "meaning": "100% dos Security Hotspots de new code revisados"
+    },
+    {
+      "metric": "security_rating",
+      "op": "GT",
+      "error": "1",
+      "scope": "overall",
+      "meaning": "Security overall deve permanecer A"
+    },
+    {
+      "metric": "reliability_rating",
+      "op": "GT",
+      "error": "2",
+      "scope": "overall",
+      "meaning": "Reliability overall no máximo B"
+    }
+  ]
+}
