@@ -6,8 +6,11 @@ Análise contínua de qualidade e segurança para TypeScript + Python.
 
 | Arquivo | Função |
 |---------|--------|
-| `sonar-project.properties` | Chave do projeto, sources, coverage, exclusões |
-| `.github/workflows/sonarqube.yml` | Scan em `main` e PRs + Quality Gate |
+| `sonar-project.properties` | Chave do projeto, sources, coverage, exclusões, `qualitygate.wait` |
+| `.github/workflows/sonarqube.yml` | Scan em `main` e PRs + Quality Gate action |
+| `sonar/quality-gate.json` | Política do gate **Ventura Production** |
+| `scripts/setup-sonar-quality-gate.sh` | Cria gate + condições + associa projeto via API |
+| `docs/QUALITY_GATES.md` | Detalhes das condições e como ajustar |
 
 ## Setup (uma vez)
 
@@ -18,8 +21,6 @@ Análise contínua de qualidade e segurança para TypeScript + Python.
 3. Confirme:
    - **Organization key:** `venturalabs-ai`
    - **Project key:** `venturalabs-ai_ventura-agents`
-
-Se a org/key forem diferentes, atualize `sonar-project.properties`.
 
 ### 2. Gerar token
 
@@ -34,24 +35,25 @@ Se a org/key forem diferentes, atualize `sonar-project.properties`.
    - Name: `SONAR_TOKEN`
    - Value: token do passo 2
 
-### 4. Validar
+### 4. Quality Gate personalizado
 
-- Push em `main` ou abra um PR, ou
+```bash
+export SONAR_TOKEN="seu-token"  # idealmente com Administer Quality Gates
+bash scripts/setup-sonar-quality-gate.sh
+```
+
+Isso cria o gate **Ventura Production** e associa ao projeto.  
+Detalhes: [QUALITY_GATES.md](QUALITY_GATES.md).
+
+### 5. Validar
+
 - **Actions → SonarQube → Run workflow**
 
-O job deve:
-1. Confirmar que `SONAR_TOKEN` existe
-2. Rodar typecheck/testes
-3. Executar o scanner
-4. Avaliar o **Quality Gate**
+O job deve confirmar o token, analisar o código e **falhar se o Quality Gate estiver vermelho**.
 
 ## Branch protection (recomendado)
 
-Em **Settings → Rules / Branches**, marque o check:
-
-- `SonarQube Cloud Scan` (ou o nome do job no workflow)
-
-como status check obrigatório em PRs para `main`.
+Marque o check `SonarQube Cloud Scan` como obrigatório em PRs para `main`.
 
 ## O que é analisado
 
@@ -59,7 +61,7 @@ como status check obrigatório em PRs para `main`.
 - `agents/`, `core/` — fundação Python
 - `tests/` — testes
 
-Excluídos: `docs/`, `scripts/`, `node_modules/`, `dist/`, markdown.
+Excluídos: `docs/`, `scripts/`, `sonar/`, `node_modules/`, `dist/`, markdown.
 
 ## Troubleshooting
 
@@ -67,5 +69,6 @@ Excluídos: `docs/`, `scripts/`, `node_modules/`, `dist/`, markdown.
 |---------|----------------|------|
 | Job falha em "Verify SONAR_TOKEN" | Secret ausente | Criar `SONAR_TOKEN` |
 | Project not found | Key/org errados | Ajustar `sonar-project.properties` |
-| Quality Gate failed | Issues novos / cobertura | Ver dashboard no SonarCloud |
-| Analysis succeeds but no PR decoration | Permissões / app Sonar | Reinstalar app SonarQube Cloud no org |
+| Quality Gate failed | Issues / cobertura new code | Dashboard SonarCloud + [QUALITY_GATES.md](QUALITY_GATES.md) |
+| Script setup-sonar falha | Token sem Administer Quality Gates | Gerar token com permissão na org |
+| Analysis ok, sem PR decoration | App SonarCloud | Reinstalar integração GitHub na org |
