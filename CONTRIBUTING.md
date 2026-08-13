@@ -4,6 +4,8 @@ Obrigado pelo interesse em contribuir com o ecossistema Ventura!
 
 Este repositório contém a fundação técnica (TypeScript + Python) e a documentação dos 76 agentes.
 
+Ao participar, você concorda em seguir o nosso [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Fluxo de trabalho
 
 1. **Crie uma branch** a partir de `main`:
@@ -29,6 +31,14 @@ Este repositório contém a fundação técnica (TypeScript + Python) e a docume
    - Referencie issues relacionadas
 
 5. Aguarde o CI passar e a revisão.
+
+## Issues
+
+Use os templates oficiais ao abrir issues:
+
+- **Bug report** — comportamento inesperado
+- **Feature request** — novas capacidades
+- **Architecture improvement** — mudanças estruturais / ADRs
 
 ## Padrões de código
 
@@ -60,12 +70,13 @@ agents/base/agent.py   → Classe base Python dos agentes
 core/config.py         → Configurações centralizadas
 src/                   → Fundação TypeScript (catálogo, platform, context-proxy)
 docs/                  → Documentação e ADRs
-.github/workflows/     → CI/CD
+.github/workflows/     → CI/CD + SonarQube
+.github/ISSUE_TEMPLATE/ → Templates de issues
 ```
 
 ## Code of Conduct
 
-Esperamos que todos os contribuidores mantenham um ambiente profissional e respeitoso.
+Leia o [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Violations podem ser reportadas em **dev@venturalabs.ai**.
 
 ## Dúvidas?
 
