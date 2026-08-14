@@ -70,7 +70,7 @@ agents/base/agent.py   → Classe base Python dos agentes
 core/config.py         → Configurações centralizadas
 src/                   → Fundação TypeScript (catálogo, platform, context-proxy)
 docs/                  → Documentação e ADRs
-.github/workflows/     → CI/CD + SonarQube
+.github/workflows/     → CI/CD
 .github/ISSUE_TEMPLATE/ → Templates de issues
 ```
 

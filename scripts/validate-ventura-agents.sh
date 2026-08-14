@@ -34,7 +34,6 @@ check "CONTRIBUTING present" test -f CONTRIBUTING.md
 check "CODE_OF_CONDUCT present" test -f CODE_OF_CONDUCT.md
 check "SECURITY policy present" test -f SECURITY.md
 check "CI workflow present" test -f .github/workflows/ci.yml
-check "SonarQube workflow present" test -f .github/workflows/sonarqube.yml
 check "Issue templates present" test -d .github/ISSUE_TEMPLATE
 check "BaseAgent present" test -f agents/base/agent.py
 check "core/config present" test -f core/config.py

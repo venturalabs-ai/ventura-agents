@@ -33,4 +33,4 @@ Opções descartadas e por quê.
 
 - [ ] Documentação / ADR atualizado
 - [ ] Testes cobrindo o novo comportamento
-- [ ] Compatibilidade com CI e SonarQube
+- [ ] Compatibilidade com CI
