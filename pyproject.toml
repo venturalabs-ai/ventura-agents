@@ -3,7 +3,7 @@ name = "ventura-agents"
 version = "3.0.0"
 description = "Ventura Labs AI — Ecossistema de Agentes Autônomos Empresariais"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
     { name = "Ventura Labs AI", email = "dev@venturalabs.ai" }
@@ -14,6 +14,8 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries",
 ]
@@ -47,7 +49,7 @@ Issues = "https://github.com/venturalabs-ai/ventura-agents/issues"
 Changelog = "https://github.com/venturalabs-ai/ventura-agents/blob/main/CHANGELOG.md"
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py310"
 line-length = 100
 
 [tool.ruff.lint]
@@ -60,7 +62,7 @@ testpaths = ["tests"]
 addopts = "-v --tb=short"
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.10"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
