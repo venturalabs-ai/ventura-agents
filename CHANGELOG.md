@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `src/core/context-proxy.ts` reescrito como primitiva TypeScript determinística (em memória, sem dependência de Redis/OpenAI/zod) e incluído no `tsconfig` — antes o arquivo não compilava e ficava fora do build.
+- `src/rag/pipeline.py`: implementados `_chunk_recursive` e `_chunk_by_structure` (antes chamados mas inexistentes), correção de truncamento no `retrieve` (`results[:top_k]` em dict), re-ranking determinístico de fato e remoção de modelo inválido (`claude-haiku-3.5`). Clientes OpenAI/ChromaDB agora são inicializados de forma lazy.
+- `agents/base/agent.py`: aprovação HITL agora é **fail-closed em produção** (antes auto-aprovava após 1s). Auto-aprovação fora de development só com `hitl_auto_approve=true`.
+- `src/index.ts`: `decodeURIComponent` protegido contra URL malformada (400 em vez de 500).
+- `core/config.py`: migrado `class Config` → `SettingsConfigDict` (deprecation do Pydantic v2).
+
+### Changed
+- CI (`ci.yml` e `sonarqube.yml`) agora **falham** em falhas de Python (ruff/pytest/instalação) — removidos os `|| true`.
+- `pyproject.toml`: extra `rag` passa a declarar `numpy` e `openai`; `numpy` também no extra `dev` (necessário pelos testes RAG); `pythonpath` adicionado ao pytest; wheel mínimo configurado (`only-include`) para que `pip install -e ".[dev]"` funcione (antes o hatchling falhava por não haver pacote com o nome do projeto).
+- `sonarqube.yml`: ação de Quality Gate corrigida para `v1.2.1` (a referência `v1.3.0` não existia e quebrava o job no setup).
+- README/`docs/COMPLETENESS_MATRIX.md` atualizados para claims verificáveis (4 agentes no catálogo; MCP como integração futura; compressão mensurável via `compressionRatio`).
+
+### Added
+- Testes: `tests/context-proxy.test.ts` (7), `tests/test_base_agent.py` (9), `tests/test_rag_pipeline.py` (10).
+- `docs/AUDIT.md` com achados e remediação.
+
 ## [3.0.0] - 2026-08-12
 
 ### Added

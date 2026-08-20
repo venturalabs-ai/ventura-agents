@@ -1,6 +1,6 @@
 """
 Ventura Labs AI - Base Agent
-Classe base para todos os 76 agentes do ecossistema.
+Classe base para os agentes do ecossistema.
 """
 
 from __future__ import annotations
@@ -10,9 +10,9 @@ import logging
 import time
 import uuid
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
-from enum import Enum
-from typing import Any, Optional
+from datetime import UTC, datetime
+from enum import StrEnum
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -21,7 +21,7 @@ from core.config import AutonomyLevel, Jurisdiction, get_settings
 logger = logging.getLogger(__name__)
 
 
-class AgentStatus(str, Enum):
+class AgentStatus(StrEnum):
     IDLE = "idle"
     PROCESSING = "processing"
     WAITING_APPROVAL = "waiting_approval"
@@ -29,7 +29,7 @@ class AgentStatus(str, Enum):
     DISABLED = "disabled"
 
 
-class TaskPriority(str, Enum):
+class TaskPriority(StrEnum):
     LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
@@ -44,11 +44,11 @@ class AgentTask(BaseModel):
     payload: dict[str, Any] = Field(default_factory=dict)
     priority: TaskPriority = TaskPriority.MEDIUM
     jurisdiction: Jurisdiction = Jurisdiction.BRASIL
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    started_at: Optional[datetime] = None
-    completed_at: Optional[datetime] = None
-    result: Optional[dict[str, Any]] = None
-    error: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    started_at: datetime | None = None
+    completed_at: datetime | None = None
+    result: dict[str, Any] | None = None
+    error: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -88,7 +88,7 @@ class AgentMetrics(BaseModel):
     failed_tasks: int = 0
     total_processing_time: float = 0.0
     average_processing_time: float = 0.0
-    last_activity: Optional[datetime] = None
+    last_activity: datetime | None = None
     uptime_seconds: float = 0.0
     success_rate: float = 0.0
 
@@ -96,13 +96,13 @@ class AgentMetrics(BaseModel):
 class BaseAgent(ABC):
     """
     Classe base abstrata para todos os agentes do ecossistema Ventura.
-    
+
     Implementa:
     - Ciclo de vida do agente
     - Gestão de tarefas
     - Governança e níveis de autonomia
     - Métricas e observabilidade
-    - Comunicação via MCP
+    - Integração futura com MCP (ver docs/MCP_FOR_AGENTS.md)
     """
 
     def __init__(self, config: AgentConfig):
@@ -189,7 +189,7 @@ class BaseAgent(ABC):
         logger.info(f"Task {task.id} submitted to agent {self.agent_id}")
         return task.id
 
-    async def get_task_status(self, task_id: str) -> Optional[AgentTask]:
+    async def get_task_status(self, task_id: str) -> AgentTask | None:
         """Retorna o status de uma tarefa"""
         return self._active_tasks.get(task_id)
 
@@ -198,7 +198,7 @@ class BaseAgent(ABC):
         if task_id in self._active_tasks:
             task = self._active_tasks[task_id]
             task.error = "Cancelled by user"
-            task.completed_at = datetime.now(timezone.utc)
+            task.completed_at = datetime.now(UTC)
             del self._active_tasks[task_id]
             self.metrics.failed_tasks += 1
             return True
@@ -216,7 +216,7 @@ class BaseAgent(ABC):
                     self._task_queue.get(), timeout=1.0
                 )
                 asyncio.create_task(self._execute_task(task))
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 logger.error(f"Error in process loop: {e}")
@@ -225,7 +225,7 @@ class BaseAgent(ABC):
     async def _execute_task(self, task: AgentTask) -> None:
         """Executa uma tarefa com retry e governança"""
         self._active_tasks[task.id] = task
-        task.started_at = datetime.now(timezone.utc)
+        task.started_at = datetime.now(UTC)
         self.status = AgentStatus.PROCESSING
         self.metrics.total_tasks += 1
 
@@ -248,7 +248,7 @@ class BaseAgent(ABC):
                 )
 
                 task.result = result
-                task.completed_at = datetime.now(timezone.utc)
+                task.completed_at = datetime.now(UTC)
                 self.metrics.completed_tasks += 1
                 success = True
 
@@ -256,7 +256,7 @@ class BaseAgent(ABC):
                 await self._on_task_success(task)
                 break
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 task.error = f"Timeout after {self.config.timeout_seconds}s (attempt {attempt + 1})"
                 logger.warning(f"Task {task.id} timed out (attempt {attempt + 1})")
                 if attempt < self.config.retry_attempts - 1:
@@ -271,7 +271,7 @@ class BaseAgent(ABC):
         if not success:
             self.metrics.failed_tasks += 1
             if task.completed_at is None:
-                task.completed_at = datetime.now(timezone.utc)
+                task.completed_at = datetime.now(UTC)
             await self._on_task_failure(task)
 
         # Cleanup e métricas
@@ -286,7 +286,7 @@ class BaseAgent(ABC):
                     self.metrics.total_processing_time / self.metrics.completed_tasks
                 )
 
-        self.metrics.last_activity = datetime.now(timezone.utc)
+        self.metrics.last_activity = datetime.now(UTC)
         self.metrics.success_rate = (
             self.metrics.completed_tasks / max(self.metrics.total_tasks, 1)
         )
@@ -325,20 +325,25 @@ class BaseAgent(ABC):
     async def _wait_for_approval(self, task: AgentTask) -> bool:
         """
         Aguarda aprovação humana para a tarefa.
-        Em desenvolvimento retorna True automaticamente.
-        Em produção deve integrar com sistema de aprovações (HITL).
+
+        Em desenvolvimento, auto-aprova para facilitar testes (ou quando o
+        operador opta explicitamente por `hitl_auto_approve`). Em produção,
+        falha de forma segura (fail-closed): sem um canal HITL configurado,
+        a tarefa é rejeitada pela governança em vez de auto-aprovada.
         """
         logger.info(f"Approval requested for task {task.id} by agent {self.agent_id}")
-        
-        if self.settings.environment.value == "development":
-            # Auto-approve em dev para facilitar testes
+
+        if self.settings.environment.value == "development" or self.settings.hitl_auto_approve:
             await asyncio.sleep(0.2)
             return True
 
-        # TODO: Integrar com fila de aprovações / MCP human-loop
-        # Por enquanto, aguarda e simula aprovação
-        await asyncio.sleep(1.0)
-        return True
+        # TODO: Integrar com fila de aprovações / MCP human-loop.
+        # Sem canal HITL, não auto-aprovar em produção.
+        logger.warning(
+            f"Task {task.id} rejected by governance: no human-in-the-loop channel configured "
+            f"(environment={self.settings.environment.value})."
+        )
+        return False
 
     # ==========================================
     # ABSTRACT METHODS (devem ser implementados)

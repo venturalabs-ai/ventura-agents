@@ -28,6 +28,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "numpy>=1.26.0",
     "pytest>=8.3.0",
     "pytest-asyncio>=0.24.0",
     "pytest-cov>=5.0.0",
@@ -37,6 +38,8 @@ dev = [
 ]
 rag = [
     "chromadb>=0.5.0",
+    "numpy>=1.26.0",
+    "openai>=1.40.0",
     "sentence-transformers>=3.0.0",
 ]
 
@@ -58,6 +61,7 @@ ignore = ["S101"]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 addopts = "-v --tb=short"
+pythonpath = ["."]
 
 [tool.mypy]
 python_version = "3.12"
@@ -68,3 +72,8 @@ warn_unused_configs = true
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+# Monorepo foundation (agents/, core/, src/) — not a distributable library.
+# Minimal wheel keeps `pip install -e ".[dev]"` working to install dependencies.
+[tool.hatch.build.targets.wheel]
+only-include = ["README.md"]

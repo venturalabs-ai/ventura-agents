@@ -1,6 +1,6 @@
 # Ventura Agents Ecosystem V3.0
 
-**Sistema de 76 Agentes Autônomos Empresariais** — Fundação técnica (TypeScript + Python) open source e production-ready.
+**Ecossistema de Agentes Autônomos Empresariais** — Fundação técnica (TypeScript + Python) open source. O catálogo técnico verificado atual contém **4 agentes**; o roadmap planeja **76 agentes especializados** em 11 camadas.
 
 [![CI](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/ci.yml/badge.svg)](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/ci.yml)
 [![SonarQube](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/sonarqube.yml/badge.svg)](https://github.com/venturalabs-ai/ventura-agents/actions/workflows/sonarqube.yml)
@@ -11,17 +11,18 @@
 
 ## Visão Geral
 
-Ecossistema **open source** e production-ready de **76 agentes especializados** cobrindo 11 camadas:
+Ecossistema **open source** de agentes especializados. O roadmap cobre 11 camadas:
 Governança, Executiva, Financeiro, Jurídico, RH, Comercial, Compras, Operações, Logística, TI e ESG.
+A fundação técnica atual implementa e testa as primitivas centrais e agentes verificáveis.
 
 ### Diferenciais V3
 
-- **Código real**: Context Proxy (TypeScript) + RAG Pipeline (Python + ChromaDB) + **BaseAgent Python**
-- **MCP**: comunicação inter-agentes
+- **Código real e testado**: Context Proxy (TypeScript) + RAG Pipeline (Python + ChromaDB) + **BaseAgent Python**
+- **MCP**: arquitetura definida — integração futura (ver `docs/MCP_FOR_AGENTS.md`)
 - **Observabilidade**: OpenTelemetry + Collector
 - **Multi-jurisdição**: BR, US, EU, CN, IN
-- **Governança**: níveis de autonomia A0–A4 + hard gates
-- **90% redução de tokens** via Context Compression
+- **Governança**: níveis de autonomia A0–A4 + hard gates, com fail-closed em produção
+- **Compressão de contexto** com `compressionRatio` mensurável (Context Proxy)
 
 ## Quick Start
 
@@ -49,7 +50,7 @@ Endpoints:
 |---------|-----------|
 | `agents/base/agent.py` | **BaseAgent** Python (lifecycle, governança, retries, métricas) |
 | `core/config.py` | Settings central (autonomia, jurisdição, LLM, MCP, OTEL) |
-| `src/core/context-proxy.ts` | Context Proxy com compressão de tokens |
+| `src/core/context-proxy.ts` | Context Proxy — estado comprimido determinístico (em memória) |
 | `src/rag/pipeline.py` | RAG production-ready (ChromaDB) |
 | `src/platform/` | Event Driven, Knowledge, Risk, Human Loop, Registry |
 | `docs/` | ADRs, matriz de completude, MCP, SonarQube |
@@ -80,8 +81,12 @@ Endpoints:
 | Risk Management | ✅ |
 | Human Loop | ✅ |
 | Agent Registry | ✅ |
+| Context Proxy (compressão) | ✅ |
+| RAG Pipeline | ✅ |
 | BaseAgent (Python) | ✅ |
 | ADR | ✅ |
+
+> Critério: ✅ exige implementação + teste automatizado + documentação versionada (ver `docs/COMPLETENESS_MATRIX.md`).
 
 ## Automação Production-Ready
 

@@ -12,5 +12,8 @@ Um item só recebe ✅ quando possui implementação, teste automatizado e docum
 | Human Loop | ✅ Concluído | `src/platform/human-loop.ts` — solicitação, decisão e responsabilização |
 | ADR | ✅ Concluído | `docs/adr/0001-platform-primitives.md` |
 | Agent Registry | ✅ Concluído | `src/platform/registry.ts` — registro versionado e descoberta por capacidade |
+| Context Proxy | ✅ Concluído | `src/core/context-proxy.ts` — estado comprimido determinístico com `compressionRatio`; teste em `tests/context-proxy.test.ts` |
+| RAG Pipeline | ✅ Concluído | `src/rag/pipeline.py` — chunking, retrieval e re-ranking determinístico; teste em `tests/test_rag_pipeline.py` |
+| BaseAgent | ✅ Concluído | `agents/base/agent.py` — lifecycle, governança fail-closed e métricas; teste em `tests/test_base_agent.py` |
 
-Validação consolidada: `npm run check`.
+Validação consolidada: `npm run check` + `pytest tests/` + `ruff check agents core src/rag tests`.

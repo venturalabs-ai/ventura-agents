@@ -60,13 +60,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest pytest-cov pytest-asyncio pydantic pydantic-settings ruff
           if [ -f pyproject.toml ]; then
-            pip install -e ".[dev]" || true
+            pip install -e ".[dev]"
           fi
 
       - name: Node typecheck + tests
         run: |
           npm run typecheck
-          npm test || true
+          npm test
           mkdir -p coverage
 
       - name: Python tests with coverage
@@ -75,7 +75,7 @@ jobs:
             pytest tests/ -q \
               --cov=agents --cov=core --cov=src \
               --cov-report=xml:coverage.xml \
-              --tb=short || true
+              --tb=short
           else
             echo "No Python tests directory; skipping coverage.xml"
           fi
@@ -87,7 +87,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: SonarQube Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@v1.3.0
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.1
         timeout-minutes: 8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
