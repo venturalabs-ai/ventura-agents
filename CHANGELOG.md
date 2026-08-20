@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - CI (`ci.yml` e `sonarqube.yml`) agora **falham** em falhas de Python (ruff/pytest/instalação) — removidos os `|| true`.
-- `pyproject.toml`: extra `rag` passa a declarar `numpy` e `openai`; `pythonpath` adicionado ao pytest; wheel mínimo configurado (`only-include`) para que `pip install -e ".[dev]"` funcione (antes o hatchling falhava por não haver pacote com o nome do projeto).
+- `pyproject.toml`: extra `rag` passa a declarar `numpy` e `openai`; `numpy` também no extra `dev` (necessário pelos testes RAG); `pythonpath` adicionado ao pytest; wheel mínimo configurado (`only-include`) para que `pip install -e ".[dev]"` funcione (antes o hatchling falhava por não haver pacote com o nome do projeto).
 - `sonarqube.yml`: ação de Quality Gate corrigida para `v1.2.1` (a referência `v1.3.0` não existia e quebrava o job no setup).
 - README/`docs/COMPLETENESS_MATRIX.md` atualizados para claims verificáveis (4 agentes no catálogo; MCP como integração futura; compressão mensurável via `compressionRatio`).
 
