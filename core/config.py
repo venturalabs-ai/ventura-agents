@@ -6,21 +6,20 @@ Versão: 3.0.0
 from __future__ import annotations
 
 import os
-from enum import Enum
+from enum import StrEnum
 from functools import lru_cache
-from typing import Any, Optional
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Environment(str, Enum):
+class Environment(StrEnum):
     DEVELOPMENT = "development"
     STAGING = "staging"
     PRODUCTION = "production"
 
 
-class Jurisdiction(str, Enum):
+class Jurisdiction(StrEnum):
     BRASIL = "BR"
     EUA = "US"
     UNIAO_EUROPEIA = "EU"
@@ -28,17 +27,24 @@ class Jurisdiction(str, Enum):
     INDIA = "IN"
 
 
-class AutonomyLevel(str, Enum):
+class AutonomyLevel(StrEnum):
     """Níveis de autonomia dos agentes (A0-A4)"""
-    A0_OBSERVE = "A0"      # Apenas observa e reporta
-    A1_SUGGEST = "A1"      # Sugere ações, humano decide
-    A2_APPROVE = "A2"      # Executa com aprovação prévia
-    A3_AUTONOMOUS = "A3"   # Autônomo com limites
-    A4_FULL = "A4"         # Autonomia total (raro)
+
+    A0_OBSERVE = "A0"  # Apenas observa e reporta
+    A1_SUGGEST = "A1"  # Sugere ações, humano decide
+    A2_APPROVE = "A2"  # Executa com aprovação prévia
+    A3_AUTONOMOUS = "A3"  # Autônomo com limites
+    A4_FULL = "A4"  # Autonomia total (raro)
 
 
 class Settings(BaseSettings):
     """Configurações da aplicação"""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+    )
 
     # App
     app_name: str = "Ventura Agents Ecosystem"
@@ -87,6 +93,8 @@ class Settings(BaseSettings):
     max_autonomy_level: AutonomyLevel = AutonomyLevel.A3_AUTONOMOUS
     require_approval_above: AutonomyLevel = AutonomyLevel.A2_APPROVE
     hard_gates_enabled: bool = True
+    # Opt-in auto-approval outside development. Default False keeps governance fail-closed.
+    hitl_auto_approve: bool = False
 
     # Observability
     otel_enabled: bool = True
@@ -126,13 +134,8 @@ class Settings(BaseSettings):
             raise ValueError("JWT_SECRET must be changed in production")
         return v
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
 
-
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     """Retorna instância singleton das configurações"""
     return Settings()

@@ -26,7 +26,14 @@ const server = createServer((req, res) => {
   }
 
   if (req.method === "GET" && req.url?.startsWith("/v1/agents/")) {
-    const agent = findAgent(decodeURIComponent(req.url.slice(11)));
+    let agentId: string;
+    try {
+      agentId = decodeURIComponent(req.url.slice(11));
+    } catch {
+      res.statusCode = 400;
+      return void res.end(JSON.stringify({ error: "invalid agent id" }));
+    }
+    const agent = findAgent(agentId);
     res.statusCode = agent ? 200 : 404;
     return void res.end(JSON.stringify(agent ?? { error: "agent not found" }));
   }
