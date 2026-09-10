@@ -15,6 +15,18 @@ export class KnowledgeGraph {
     this.edges.push(edge);
   }
   neighbors(id: string, relation?: string): readonly Entity[] {
-    return this.edges.filter((edge) => edge.from === id && (!relation || edge.relation === relation)).map((edge) => this.entities.get(edge.to)).filter((entity): entity is Entity => Boolean(entity));
+    // ⚡ Bolt Optimization: Replaced chained .filter().map().filter()
+    // with a single loop to avoid multiple intermediate array allocations.
+    // Impact: Reduces memory overhead and redundant iterations from O(N) multi-pass to a single pass.
+    const result: Entity[] = [];
+    for (const edge of this.edges) {
+      if (edge.from === id && (!relation || edge.relation === relation)) {
+        const entity = this.entities.get(edge.to);
+        if (entity) {
+          result.push(entity);
+        }
+      }
+    }
+    return result;
   }
 }
