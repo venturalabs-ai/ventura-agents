@@ -153,15 +153,19 @@ export class ContextProxy {
     // Use embedding similarity to find top-k relevant evidence
     const messageEmbedding = await this.getEmbedding(message);
     
-    const relevantEvidence = [];
-    for (const ref of evidence.references) {
+    // Fetch all reference embeddings concurrently for performance
+    const refPromises = evidence.references.map(async (ref) => {
       const refEmbedding = await this.getEmbedding(ref.id);
       const similarity = this.cosineSimilarity(messageEmbedding, refEmbedding);
-      
-      if (similarity > 0.7) {
-        relevantEvidence.push(ref);
-      }
-    }
+      return { ref, similarity };
+    });
+
+    const refResults = await Promise.all(refPromises);
+
+    // Filter by similarity score, keeping original object structure
+    const relevantEvidence = refResults
+      .filter((result) => result.similarity > 0.7)
+      .map((result) => result.ref);
     
     return relevantEvidence.slice(0, 5); // Top 5 only
   }
@@ -177,11 +181,11 @@ export class ContextProxy {
     const batchSize = 10;
     const batches = this.chunkArray(data, batchSize);
     
-    const results = [];
-    
-    for (const batch of batches) {
+    // Process all batches concurrently for performance
+    const batchPromises = batches.map(async (batch, index) => {
       // Each subagent has CLEAN context (no parent history)
-      const subagentId = `${parentAgentId}-sub-${Date.now()}`;
+      // Added index to ensure uniqueness if execution happens very fast
+      const subagentId = `${parentAgentId}-sub-${Date.now()}-${index}`;
       
       const context = {
         task: taskType,
@@ -193,15 +197,15 @@ export class ContextProxy {
       const result = await this.callAgent(subagentId, context, 'system');
       
       // Return ONLY compressed result
-      results.push({
+      return {
         valid: result.valid,
         invalid: result.invalid,
         summary: result.summary,
         // NOT included: full processing details
-      });
-      
-      // Subagent is discarded after execution
-    }
+      };
+    });
+
+    const results = await Promise.all(batchPromises);
     
     // Parent agent receives only aggregated results
     return {

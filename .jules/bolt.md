@@ -1,0 +1,3 @@
+## 2024-05-18 - Generating Unique IDs During Parallelization
+**Learning:** In the `ContextProxy.spawnSubagent` method, agent IDs were generated using `Date.now()`. When loops containing asynchronous operations are refactored to execute concurrently (e.g., using `Promise.all`), `Date.now()` can resolve to the exact same value across iterations executing in the same tick, leading to duplicate agent IDs.
+**Action:** When parallelizing iterative asynchronous tasks, always ensure ID generators include the array index or use a robust UUID generator to guarantee uniqueness instead of relying purely on timestamp.
