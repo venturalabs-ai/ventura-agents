@@ -1,0 +1,3 @@
+## 2024-05-24 - [Avoid Iterable Spreads]
+**Learning:** [Spreading iterables like Map and Set into arrays (e.g., `[...map.values()]`) to use functional array methods introduces unnecessary memory allocations and O(N) overhead.]
+**Action:** [Use `for...of` loops to iterate directly over Map and Set iterables, replacing functional methods like `filter` or `map` with imperative blocks within the loop.]
