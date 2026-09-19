@@ -6,5 +6,14 @@ export class AgentRegistry {
     if (!agent.capabilities.length || !agent.endpoint.startsWith("http")) throw new Error("capabilities and HTTP endpoint are required");
     this.registrations.set(`${agent.id}@${agent.version}`, agent);
   }
-  resolve(capability: string): readonly AgentRegistration[] { return [...this.registrations.values()].filter((agent) => agent.status === "active" && agent.capabilities.includes(capability)); }
+  resolve(capability: string): readonly AgentRegistration[] {
+    // ⚡ Bolt optimization: Avoid intermediate O(N) array allocation by using a direct loop
+    const result: AgentRegistration[] = [];
+    for (const agent of this.registrations.values()) {
+      if (agent.status === "active" && agent.capabilities.includes(capability)) {
+        result.push(agent);
+      }
+    }
+    return result;
+  }
 }
