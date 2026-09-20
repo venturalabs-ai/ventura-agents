@@ -1,0 +1,3 @@
+## 2024-05-15 - Map/Set Spread Allocation Overhead
+**Learning:** Found a widespread anti-pattern of spreading `Map` or `Set` iterables into arrays (e.g., `[...map.values()].filter(...)` or `[...set].map(...)`) merely to use array functional methods. This creates unnecessary intermediate arrays and induces O(N) memory allocation overhead before even beginning the filtering or mapping process.
+**Action:** Always iterate natively over `Map` or `Set` collections using `for...of` loops, collecting only the required results, to optimize memory usage and performance, especially on hot paths like event distribution or status checks.

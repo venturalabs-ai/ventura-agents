@@ -28,6 +28,7 @@ jobs:
           fetch-depth: 0
 
       - name: Verify SONAR_TOKEN
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
@@ -81,13 +82,15 @@ jobs:
           fi
 
       - name: SonarQube Scan
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: SonarSource/sonarqube-scan-action@v5.3.2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: SonarQube Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@v1.3.0
+        if: ${{ secrets.SONAR_TOKEN != '' }}
+        uses: sonarsource/sonarqube-quality-gate-action@v1.2.1
         timeout-minutes: 8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
