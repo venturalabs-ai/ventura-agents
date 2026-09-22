@@ -8,10 +8,17 @@ export class EventBus {
     handlers.add(handler as EventHandler); this.handlers.set(type, handlers);
     return () => handlers.delete(handler as EventHandler);
   }
+  // ⚡ Bolt: Prevent unnecessary O(N) memory allocation by avoiding Set iterable spread
   async publish<T>(event: DomainEvent<T>): Promise<boolean> {
     if (this.processed.has(event.id)) return false;
     this.processed.add(event.id);
-    await Promise.all([...this.handlers.get(event.type) ?? []].map((handler) => handler(event)));
+
+    const promises: (void | Promise<void>)[] = [];
+    for (const handler of this.handlers.get(event.type) ?? []) {
+      promises.push(handler(event));
+    }
+    await Promise.all(promises);
+
     return true;
   }
 }
