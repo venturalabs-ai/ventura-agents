@@ -1,0 +1,3 @@
+## 2024-05-24 - [Avoid Map/Set Spread Allocation]
+**Learning:** Found an anti-pattern in the codebase where Map/Set iterables were spread into arrays to use array methods (like `[...map.values()].filter(...)`). This creates unnecessary intermediate memory allocations and adds O(N) overhead.
+**Action:** Always iterate directly using `for...of` loops instead of spreading Maps or Sets into arrays to prevent this memory allocation and iteration overhead overhead, especially in code that could be executed frequently (like registry lookups).
