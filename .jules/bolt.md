@@ -1,0 +1,3 @@
+## 2024-05-24 - [Avoid Spread Syntax on Maps and Sets for Array Filtering/Mapping]
+**Learning:** Using spread syntax (`[...map.values()]` or `[...set]`) to convert Maps or Sets to arrays just to use array functional methods (`.filter()`, `.map()`) creates intermediate array memory allocations and adds O(N) spatial overhead. In a large scale TypeScript application, this anti-pattern can create significant garbage collection pressure during high-throughput operations (like event publishing or resolving registry capabilities).
+**Action:** When filtering or mapping data from `Map` or `Set` iterables, iterate directly using `for...of` loops and build the resulting array in place to prevent unnecessary intermediate memory allocations and O(N) overhead.
