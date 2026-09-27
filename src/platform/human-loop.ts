@@ -13,6 +13,7 @@ export class ApprovalQueue {
   }
   pending(): readonly Approval[] {
     const results: Approval[] = [];
+    // ⚡ Bolt: Iterating directly over the map values to avoid O(N) memory allocation from array spread
     for (const approval of this.approvals.values()) {
       if (approval.status === "pending") {
         results.push(approval);

@@ -8,6 +8,7 @@ export class AgentRegistry {
   }
   resolve(capability: string): readonly AgentRegistration[] {
     const results: AgentRegistration[] = [];
+    // ⚡ Bolt: Iterating directly over the map values to avoid O(N) memory allocation from array spread
     for (const agent of this.registrations.values()) {
       if (agent.status === "active" && agent.capabilities.includes(capability)) {
         results.push(agent);
