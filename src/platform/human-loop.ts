@@ -11,5 +11,15 @@ export class ApprovalQueue {
     if (!decidedBy.trim()) throw new Error("decidedBy is required");
     const decision: Approval = { ...current, status, decidedBy }; this.approvals.set(id, decision); return decision;
   }
-  pending(): readonly Approval[] { return [...this.approvals.values()].filter((approval) => approval.status === "pending"); }
+  pending(): readonly Approval[] {
+    // ⚡ Bolt: Iterating directly over Map values avoids O(N) intermediate array
+    // allocation that occurs when using spread syntax [...map.values()].filter(...)
+    const pendingApprovals: Approval[] = [];
+    for (const approval of this.approvals.values()) {
+      if (approval.status === "pending") {
+        pendingApprovals.push(approval);
+      }
+    }
+    return pendingApprovals;
+  }
 }
