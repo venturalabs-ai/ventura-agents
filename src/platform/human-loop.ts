@@ -12,6 +12,8 @@ export class ApprovalQueue {
     const decision: Approval = { ...current, status, decidedBy }; this.approvals.set(id, decision); return decision;
   }
   pending(): readonly Approval[] {
+    // ⚡ Bolt: Iterating directly over Map values avoids O(N) intermediate array
+    // allocation that occurs when using spread syntax [...map.values()].filter(...)
     const pendingApprovals: Approval[] = [];
     for (const approval of this.approvals.values()) {
       if (approval.status === "pending") {

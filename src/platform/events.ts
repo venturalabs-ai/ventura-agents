@@ -12,6 +12,8 @@ export class EventBus {
     if (this.processed.has(event.id)) return false;
     this.processed.add(event.id);
 
+    // ⚡ Bolt: Iterating directly over Set values avoids O(N) intermediate array
+    // allocation that occurs when using spread syntax [...set].map(...)
     const promises: (void | Promise<void>)[] = [];
     for (const handler of this.handlers.get(event.type) ?? []) {
       promises.push(handler(event));

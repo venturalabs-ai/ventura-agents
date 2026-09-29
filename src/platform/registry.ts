@@ -7,6 +7,8 @@ export class AgentRegistry {
     this.registrations.set(`${agent.id}@${agent.version}`, agent);
   }
   resolve(capability: string): readonly AgentRegistration[] {
+    // ⚡ Bolt: Iterating directly over Map values avoids O(N) intermediate array
+    // allocation that occurs when using spread syntax [...map.values()].filter(...)
     const resolved: AgentRegistration[] = [];
     for (const agent of this.registrations.values()) {
       if (agent.status === "active" && agent.capabilities.includes(capability)) {
