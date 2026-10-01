@@ -12,6 +12,7 @@ export class ApprovalQueue {
     const decision: Approval = { ...current, status, decidedBy }; this.approvals.set(id, decision); return decision;
   }
   pending(): readonly Approval[] {
+    // Optimization: using direct iteration avoids intermediate array allocation from [...map.values()]
     const result: Approval[] = [];
     for (const approval of this.approvals.values()) {
       if (approval.status === "pending") {

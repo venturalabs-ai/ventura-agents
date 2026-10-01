@@ -12,6 +12,7 @@ export class EventBus {
     if (this.processed.has(event.id)) return false;
     this.processed.add(event.id);
     const promises: (void | Promise<void>)[] = [];
+    // Optimization: using direct iteration avoids intermediate array allocations from spreading Sets
     for (const handler of this.handlers.get(event.type) ?? []) {
       promises.push(handler(event));
     }

@@ -7,6 +7,7 @@ export class AgentRegistry {
     this.registrations.set(`${agent.id}@${agent.version}`, agent);
   }
   resolve(capability: string): readonly AgentRegistration[] {
+    // Optimization: using direct iteration avoids intermediate array allocation from [...map.values()]
     const result: AgentRegistration[] = [];
     for (const agent of this.registrations.values()) {
       if (agent.status === "active" && agent.capabilities.includes(capability)) {
