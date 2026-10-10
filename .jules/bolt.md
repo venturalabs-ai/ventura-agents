@@ -1,0 +1,3 @@
+## 2024-10-10 - Replace Map/Set spreads with for...of
+**Learning:** Using the spread operator on Maps or Sets (like `[...map.values()].filter(...)` or `[...set].map(...)`) is a performance anti-pattern. It forces the engine to iterate and allocate an entire intermediate array in memory just to chain functional array methods, introducing unnecessary O(N) memory allocation and processing overhead before the actual filtering or mapping happens.
+**Action:** Always iterate directly over Map/Set iterables using `for...of` loops, collecting results directly into the final array. This saves intermediate memory allocation and reduces iterations.
