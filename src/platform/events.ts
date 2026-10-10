@@ -11,6 +11,8 @@ export class EventBus {
   async publish<T>(event: DomainEvent<T>): Promise<boolean> {
     if (this.processed.has(event.id)) return false;
     this.processed.add(event.id);
+    // ⚡ Bolt Optimization: Using for...of instead of [...set].map()
+    // Avoids O(N) intermediate array allocation and redundant iteration overhead.
     const promises: (void | Promise<void>)[] = [];
     const eventHandlers = this.handlers.get(event.type);
     if (eventHandlers) {

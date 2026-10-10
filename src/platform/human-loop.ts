@@ -12,6 +12,8 @@ export class ApprovalQueue {
     const decision: Approval = { ...current, status, decidedBy }; this.approvals.set(id, decision); return decision;
   }
   pending(): readonly Approval[] {
+    // ⚡ Bolt Optimization: Using for...of instead of [...map.values()].filter()
+    // Avoids O(N) intermediate array allocation and redundant iteration overhead.
     const results: Approval[] = [];
     for (const approval of this.approvals.values()) {
       if (approval.status === "pending") {

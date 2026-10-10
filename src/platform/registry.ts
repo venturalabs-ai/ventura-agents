@@ -7,6 +7,8 @@ export class AgentRegistry {
     this.registrations.set(`${agent.id}@${agent.version}`, agent);
   }
   resolve(capability: string): readonly AgentRegistration[] {
+    // ⚡ Bolt Optimization: Using for...of instead of [...map.values()].filter()
+    // Avoids O(N) intermediate array allocation and redundant iteration overhead.
     const results: AgentRegistration[] = [];
     for (const agent of this.registrations.values()) {
       if (agent.status === "active" && agent.capabilities.includes(capability)) {
