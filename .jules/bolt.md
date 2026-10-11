@@ -1,0 +1,3 @@
+## 2024-08-01 - [Avoid Map/Set spread to Array allocation anti-pattern]
+**Learning:** Found multiple instances where `Map.values()` or `Set` iterables were being spread into an array using `[...iterable]` just to use array methods like `.filter()` or `.map()`. This creates unnecessary intermediate memory allocations and introduces O(N) overhead which can be problematic during hot-paths like event bus publishing or registry resolution.
+**Action:** When working with iterables like Map or Set, iterate directly using `for...of` loops rather than converting them to arrays first. This pattern reduces memory pressure and overhead, especially in high-frequency methods.
