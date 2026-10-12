@@ -8,6 +8,8 @@ export class AgentRegistry {
   }
   resolve(capability: string): readonly AgentRegistration[] {
     const activeAgents: AgentRegistration[] = [];
+    // Bolt: Use for...of to iterate over Map values instead of spreading into an array ([...map.values()])
+    // This avoids an O(N) intermediate memory allocation and O(N) iteration overhead before filtering.
     for (const agent of this.registrations.values()) {
       if (agent.status === "active" && agent.capabilities.includes(capability)) {
         activeAgents.push(agent);

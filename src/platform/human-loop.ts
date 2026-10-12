@@ -13,6 +13,8 @@ export class ApprovalQueue {
   }
   pending(): readonly Approval[] {
     const pendingApprovals: Approval[] = [];
+    // Bolt: Use for...of to iterate over Map values instead of spreading into an array ([...map.values()])
+    // This avoids an O(N) intermediate memory allocation and O(N) iteration overhead before filtering.
     for (const approval of this.approvals.values()) {
       if (approval.status === "pending") {
         pendingApprovals.push(approval);
