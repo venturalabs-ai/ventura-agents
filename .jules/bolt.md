@@ -1,0 +1,3 @@
+## 2024-05-14 - Avoid spreading Map/Set iterables
+**Learning:** Spreading Map and Set iterables (e.g., `[...map.values()]`) creates unnecessary intermediate memory allocations and adds O(N) overhead. Additionally, using strict `instanceof Promise` checks to filter arrays before passing them to `Promise.all()` inadvertently drops non-native 'thenable' objects.
+**Action:** Iterate directly using `for...of` loops to prevent unnecessary intermediate memory allocations. Collect all results (Promises and non-promise values) and pass them directly to `Promise.all()`, which safely and inherently handles both.
