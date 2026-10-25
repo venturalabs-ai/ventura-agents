@@ -12,6 +12,6 @@ on:
 
 jobs:
   noop:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - run: echo "This workflow is deprecated. Use ci.yml instead."
