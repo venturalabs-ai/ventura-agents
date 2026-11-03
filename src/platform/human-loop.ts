@@ -11,5 +11,14 @@ export class ApprovalQueue {
     if (!decidedBy.trim()) throw new Error("decidedBy is required");
     const decision: Approval = { ...current, status, decidedBy }; this.approvals.set(id, decision); return decision;
   }
-  pending(): readonly Approval[] { return [...this.approvals.values()].filter((approval) => approval.status === "pending"); }
+  pending(): readonly Approval[] {
+    const result: Approval[] = [];
+    // Optimization: prevent intermediate array allocation by iterating Map values directly
+    for (const approval of this.approvals.values()) {
+      if (approval.status === "pending") {
+        result.push(approval);
+      }
+    }
+    return result;
+  }
 }
