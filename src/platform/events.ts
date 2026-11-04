@@ -11,7 +11,13 @@ export class EventBus {
   async publish<T>(event: DomainEvent<T>): Promise<boolean> {
     if (this.processed.has(event.id)) return false;
     this.processed.add(event.id);
-    await Promise.all([...this.handlers.get(event.type) ?? []].map((handler) => handler(event)));
+    const handlers = this.handlers.get(event.type);
+    if (handlers) {
+      // Optimization: Replace array spread with direct iteration to prevent unnecessary intermediate memory allocations and O(N) overhead
+      const promises = [];
+      for (const handler of handlers) promises.push(handler(event));
+      await Promise.all(promises);
+    }
     return true;
   }
 }
